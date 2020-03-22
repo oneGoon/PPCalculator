@@ -1,0 +1,26 @@
+<view class="main">
+    <view class="topView">
+        <view class="topItem"  wx:for="{{TopButtonList}}" wx:key="index">
+         <button class="topButton" id="{{item}}" bindtap="topItemClick">{{item}}</button>
+        </view>
+    </view>
+    <view class="actualPay">
+        <view class="actualLabel">实际付款</view>
+        <input class="actualInput" placeholder="" type="digit" bindblur="bindblurActualTotal" value="{{totalPay}}"/>
+    </view>
+    <view >
+        <view class="payHeader">
+            <view class="payHeaderItem">姓名</view>
+            <view class="payHeaderItem">价格(元)</view>
+            <view class="payHeaderItem">实付</view>
+        </view>
+        <view class="payBody">
+            <view class="memberItem" wx:for="{{payMemberList}}" wx:key="index">
+                    <view class="memberNo"><text class="memberText">{{index+1}}</text></view>
+                    <input bindblur="bindblurName" class="memberInput" type="text" id="{{index}}" value="{{item.name}}" placeholder="名字"/>
+                    <input bindblur="bindblurPrice" id="{{index}}" class="priceInput" type="digit" value="{{item.price}}" placeholder="价格"/>
+                    <view class="actualPayView"><text class="actualPayText">{{item.pay}}</text></view>     
+            </view>
+        </view>
+    </view>
+</view>
