@@ -8,12 +8,7 @@ Page({
     totalPay: 0,
     payMemberList:[{name:"",price:0 ,pay:0}],
     // calData:[]
-    navListData:[],
-    p:0.2
-  },
-
-  getppp:function (){
-      this.p=0.5
+    navListData:[]
   },
 
   topItemClick: function(e) {
