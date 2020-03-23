@@ -1,15 +1,37 @@
+const app = getApp();
+var shareTicket
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
+    // shareData: {
+    //   title: "转发账单",
+    //   desc: "巴拉巴拉",
+    //   path: "/pages/index/index?name=alan"
+    // },
     TopButtonList: ["+","-","清空","合并","计算"],
     totalPay: 0,
     payMemberList:[{name:"",price:0 ,pay:0}],
     // calData:[]
     navListData:[]
   },
+
+  onShareAppMessage: function(res) {
+    let totalPay = this.data.totalPay
+    let totalPayJson = JSON.stringify(totalPay)
+    let listData = this.data.payMemberList
+    let listJson = JSON.stringify(listData)
+    // listData.encode
+    return {
+      title: "转发账单",
+      desc: "alan出版",
+      path: "/pages/index/index?sharedList=" + listJson + "&totalPay=" + totalPayJson
+      
+    };
+  },
+
 
   topItemClick: function(e) {
     let cid = e.currentTarget.id;
@@ -24,9 +46,24 @@ Page({
       break;
       case "计算": this.calAction();
       break;
+      case "转发": this.shareAction();
+      break;
       default:break;
     }
   },
+
+  shareAction: function() {
+   wx.showShareMenu({
+      withShareTicket: true,
+      success: (res) => {
+        console.log('showShareMenu----onload---success', res);
+      },
+      fail: () => {
+        console.log('fail')
+      }
+    })
+  },
+
   addAction: function() { 
     let payMemberList = this.data.payMemberList
     payMemberList.push({name:"",price:0 ,pay:0})
@@ -138,69 +175,21 @@ Page({
     })
   },
 
-  getNavListData(){
-    wx.request({
-      url:"wanggang.store",
-      success(res){
-        console.log(res)
-      }
-    })
-  },
-
-  /**
-   * 生命周期函数--监听页面加载
-   */
   onLoad: function (options) {
-    // 发起请求
-    this.getNavListData()
+    wx.showShareMenu({
+      withShareTicket: true
+    })
+    let sharedList = options.sharedList
+    let totalPay = options.totalPay
+    if (sharedList != null) {
+      let sharedListObj = JSON.parse(sharedList)
+      let totalPayObj = JSON.parse(totalPay)
+      this.setData({
+        totalPay: totalPayObj,
+        payMemberList: sharedListObj
+      })
+    }
   },
+  
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-    
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-    
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-    
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-    
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-    
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-    
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-    
-  }
 })
